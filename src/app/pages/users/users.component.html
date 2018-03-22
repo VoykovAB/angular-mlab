@@ -1,0 +1,119 @@
+<form [formGroup]="formGroup">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">{{ current_id=='new' ? 'Add' : 'Edit' }} form</h5>
+            <hr>
+
+
+            <div class="form-group row">
+                <label for="first_name" class="col-sm-2 col-form-label">First name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control"
+                           [class.is-invalid]="first_name.invalid && (first_name.dirty || first_name.touched)"
+                           id="first_name" placeholder="First name"
+                           formControlName="first_name" required minlength="4">
+
+
+                    <div class="invalid-feedback" *ngIf="first_name.errors">
+                        <div *ngIf="first_name.errors.required">
+                            First Name is required.
+                        </div>
+                        <div *ngIf="first_name.errors.minlength">
+                            First Name must be at least 4 characters long.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="last_name" class="col-sm-2 col-form-label">Last name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="last_name" placeholder="Last name"
+                           [class.is-invalid]="last_name.invalid && (last_name.dirty || last_name.touched)"
+                           formControlName="last_name" required minlength="4">
+
+                    <div class="invalid-feedback" *ngIf="last_name.errors">
+                        <div *ngIf="last_name.errors.required">
+                            Last Name is required.
+                        </div>
+                        <div *ngIf="last_name.errors.minlength">
+                            Last Name must be at least 4 characters long.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="birth_date" class="col-sm-2 col-form-label">Birth date</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="birth_date" placeholder="Birth date" formControlName="birth_date"
+                           [class.is-invalid]="birth_date.invalid && (birth_date.dirty || birth_date.touched)"
+                           required minlength="4">
+
+                    <div class="invalid-feedback" *ngIf="birth_date.errors">
+                        <div *ngIf="birth_date.errors.required">
+                            Birth date is required.
+                        </div>
+                        <div *ngIf="birth_date.errors.minlength">
+                            Birth date must be at least 8 characters long.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="last_name" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email"
+                           [class.is-invalid]="email.invalid && (email.dirty || email.touched)"
+                           required minlength="4">
+
+                    <div class="invalid-feedback" *ngIf="email.errors">
+                        <div *ngIf="email.errors.required">
+                            Email is required.
+                        </div>
+                        <div *ngIf="email.errors.minlength">
+                            Email must be at least 4 characters long.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="text" formControlName="_id" hidden>
+        </div>
+        <div class="card-footer text-right">
+            <button *ngIf="current_id=='new'" class="btn btn-primary" (click)="createUser()" [disabled]="formGroup.pristine">Create</button>
+            <button *ngIf="current_id!='new'" class="btn btn-success" (click)="updateUser()" [disabled]="formGroup.pristine">Update</button>
+            <button class="btn btn-dark" (click)="resetForm()">Reset</button>
+        </div>
+    </div>
+</form>
+
+<div class="card my-2">
+    <div class="card-body">
+        <h5 class="card-title">Users list</h5>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First name</th>
+                <th scope="col">Last name</th>
+                <th scope="col">Birth date</th>
+                <th scope="col">Email</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tr *ngFor="let user of users; let i = index;" class="table-{{ colors[ i%(colors.length-1) ] }}">
+                <td scope="row">{{i +1 }}</td>
+                <td>{{user.first_name}}</td>
+                <td>{{user.last_name}}</td>
+                <td>{{user.birth_date}}</td>
+                <td>{{user.email}}</td>
+                <td class="text-right">
+                    <button type="button" class="btn btn-danger btn-sm" (click)="deleteUser(user)">Delete</button>
+                    <button type="button" class="btn btn-success btn-sm" (click)="userToUpdate(user, i)">Edit</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
